@@ -2904,7 +2904,7 @@ void idSessionLocal::Init() {
 
 	// we have a single instance of the main menu
 #ifndef ID_DEMO_BUILD
-	guiMainMenu = uiManager->FindGui( "guis/mainmenu.gui", true, false, true );
+	guiMainMenu = uiManager->FindGui( "guis/demo_mainmenu.gui", true, false, true );
 #else
 	guiMainMenu = uiManager->FindGui( "guis/demo_mainmenu.gui", true, false, true );
 #endif

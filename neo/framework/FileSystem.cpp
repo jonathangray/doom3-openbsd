@@ -2425,7 +2425,7 @@ void idFileSystemLocal::SetRestrictions( void ) {
 			}
 		}
 	}
-	cvarSystem->SetCVarBool( "fs_restrict", true );
+	cvarSystem->SetCVarBool( "fs_restrict", false );
 #endif
 }
 
@@ -3207,7 +3207,7 @@ idFile *idFileSystemLocal::OpenFileReadFlags( const char *relativePath, int sear
 					continue;
 				}
 			}
-			
+
 			netpath = BuildOSPath( dir->path, dir->gamedir, relativePath );
 			fp = OpenOSFileCorrectName( netpath, "rb" );
 			if ( !fp ) {
