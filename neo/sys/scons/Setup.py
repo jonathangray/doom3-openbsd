@@ -140,6 +140,9 @@ class idSetup( scons_utils.idSetupBase ):
 		# create the FreeBSD symlinks
 		self.SimpleCommand( 'cd ' + base_dirname + '/bin ; ln -s Linux FreeBSD' )
 		self.SimpleCommand( 'cd ' + base_dirname + '/setup.data/bin ; ln -s Linux FreeBSD' )
+		# create the OpenBSD symlinks
+		self.SimpleCommand( 'cd ' + base_dirname + '/bin ; ln -s Linux OpenBSD' )
+		self.SimpleCommand( 'cd ' + base_dirname + '/setup.data/bin ; ln -s Linux openBSD' )
 		# create amd64 symlinks
 		self.SimpleCommand( 'cd ' + base_dirname + '/bin/Linux ; ln -s x86 amd64' )
 		self.SimpleCommand( 'cd ' + base_dirname + '/setup.data/bin/Linux ; ln -s x86 amd64' )

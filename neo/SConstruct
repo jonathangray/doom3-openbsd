@@ -214,6 +214,34 @@ if (g_os == 'FreeBSD'):
 	SILENT = '0'
 	M4 = 'gm4'
  
+if (g_os == 'OpenBSD'):
+	CC = 'gcc'
+	CXX = 'g++'
+	JOBS = '1'
+	BUILD = 'debug'
+	DEDICATED = '0'
+	TARGET_CORE = '1'
+	TARGET_GAME = '1'
+	TARGET_D3XP = '1'
+	TARGET_MONO = '0'
+	TARGET_DEMO = '0'
+	IDNET_HOST = ''
+	GL_HARDLINK = '0'
+	DEBUG_MEMORY = '0'
+	LIBC_MALLOC = '1'
+	ID_NOLANADDRESS = '0'
+	ID_MCHECK = '2'
+	BUILD_ROOT = 'build'
+	ALSA = '0'
+	SETUP = '0'
+	SDK = '0'
+	NOCONF = '0'
+	NOCURL = '0'
+	BUILD_GAMEPAK = '0'
+	BASEFLAGS = ''
+	SILENT = '0'
+	M4 = 'gm4'
+
 # end default settings ---------------------------
 
 # site settings ----------------------------------
@@ -325,6 +353,11 @@ if ( g_os == 'Linux' ):
 	# get the 64 bits machine on the distcc array to produce 32 bit binaries :)
 	BASECPPFLAGS.append( '-m32' )
 	BASELINKFLAGS.append( '-m32' )
+
+if ( g_os == 'OpenBSD' ):
+	CORECPPPATH.append( '/usr/X11R6/include' )
+	# for openal
+	CORECPPPATH.append( '/usr/local/include' )
 
 if ( g_sdk or SDK != '0' ):
 	BASECPPFLAGS.append( '-D_D3SDK' )

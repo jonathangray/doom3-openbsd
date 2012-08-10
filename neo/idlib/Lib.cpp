@@ -35,6 +35,18 @@ If you have questions concerning this license or the applicable additional terms
 #include <unistd.h>
 #endif
 
+#if defined(__OpenBSD__)
+#include <machine/endian.h>
+#elif defined(_WIN32) || defined(__linux__) || defined(__FreeBSD__) || (defined(MACOS_X) && defined(__i386__))
+#  define _LITTLE_ENDIAN 1234
+#  define _BYTE_ORDER _LITTLE_ENDIAN
+#elsif (defined(MACOS_X) && defined(__ppc__))
+#  define _BIG_ENDIAN 4321
+#  define _BYTE_ORDER _BIG_ENDIAN
+#else
+#  error no endian definition
+#endif
+
 /*
 ===============================================================================
 
@@ -152,12 +164,10 @@ dword PackColor( const idVec4 &color ) {
 	dz = ColorFloatToByte( color.z );
 	dw = ColorFloatToByte( color.w );
 
-#if defined(_WIN32) || defined(__linux__) || defined(__FreeBSD__) || (defined(MACOS_X) && defined(__i386__))
+#if _BYTE_ORDER == _LITTLE_ENDIAN
 	return ( dx << 0 ) | ( dy << 8 ) | ( dz << 16 ) | ( dw << 24 );
-#elif (defined(MACOS_X) && defined(__ppc__))
-	return ( dx << 24 ) | ( dy << 16 ) | ( dz << 8 ) | ( dw << 0 );
 #else
-#error OS define is required!
+	return ( dx << 24 ) | ( dy << 16 ) | ( dz << 8 ) | ( dw << 0 );
 #endif
 }
 
@@ -167,18 +177,16 @@ UnpackColor
 ================
 */
 void UnpackColor( const dword color, idVec4 &unpackedColor ) {
-#if defined(_WIN32) || defined(__linux__) || defined(__FreeBSD__) || (defined(MACOS_X) && defined(__i386__))
+#if _BYTE_ORDER == _LITTLE_ENDIAN
 	unpackedColor.Set( ( ( color >> 0 ) & 255 ) * ( 1.0f / 255.0f ),
 						( ( color >> 8 ) & 255 ) * ( 1.0f / 255.0f ), 
 						( ( color >> 16 ) & 255 ) * ( 1.0f / 255.0f ),
 						( ( color >> 24 ) & 255 ) * ( 1.0f / 255.0f ) );
-#elif (defined(MACOS_X) && defined(__ppc__))
+#else
 	unpackedColor.Set( ( ( color >> 24 ) & 255 ) * ( 1.0f / 255.0f ),
 						( ( color >> 16 ) & 255 ) * ( 1.0f / 255.0f ), 
 						( ( color >> 8 ) & 255 ) * ( 1.0f / 255.0f ),
 						( ( color >> 0 ) & 255 ) * ( 1.0f / 255.0f ) );
-#else
-#error OS define is required!
 #endif
 }
 
@@ -194,12 +202,10 @@ dword PackColor( const idVec3 &color ) {
 	dy = ColorFloatToByte( color.y );
 	dz = ColorFloatToByte( color.z );
 
-#if defined(_WIN32) || defined(__linux__) || defined(__FreeBSD__) || (defined(MACOS_X) && defined(__i386__))
+#if _BYTE_ORDER == _LITTLE_ENDIAN
 	return ( dx << 0 ) | ( dy << 8 ) | ( dz << 16 );
-#elif (defined(MACOS_X) && defined(__ppc__))
-	return ( dy << 16 ) | ( dz << 8 ) | ( dx << 0 );
 #else
-#error OS define is required!
+	return ( dy << 16 ) | ( dz << 8 ) | ( dx << 0 );
 #endif
 }
 
@@ -209,16 +215,14 @@ UnpackColor
 ================
 */
 void UnpackColor( const dword color, idVec3 &unpackedColor ) {
-#if defined(_WIN32) || defined(__linux__) || defined(__FreeBSD__) || (defined(MACOS_X) && defined(__i386__))
+#if _BYTE_ORDER == _LITTLE_ENDIAN
 	unpackedColor.Set( ( ( color >> 0 ) & 255 ) * ( 1.0f / 255.0f ),
 						( ( color >> 8 ) & 255 ) * ( 1.0f / 255.0f ), 
 						( ( color >> 16 ) & 255 ) * ( 1.0f / 255.0f ) );
-#elif (defined(MACOS_X) && defined(__ppc__))
+#else
 	unpackedColor.Set( ( ( color >> 16 ) & 255 ) * ( 1.0f / 255.0f ),
 						( ( color >> 8 ) & 255 ) * ( 1.0f / 255.0f ),
 						( ( color >> 0 ) & 255 ) * ( 1.0f / 255.0f ) );
-#else
-#error OS define is required!
 #endif
 }
 
@@ -577,7 +581,7 @@ void AssertFailed( const char *file, int line, const char *expression ) {
 	idLib::sys->DebugPrintf( "\n\nASSERTION FAILED!\n%s(%d): '%s'\n", file, line, expression );
 #ifdef _WIN32
 	__asm int 0x03
-#elif defined( __linux__ ) || defined (__FreeBSD__)
+#elif defined( __linux__ ) || defined (__FreeBSD__) || defined(__OpenBSD__)
 	__asm__ __volatile__ ("int $0x03");
 #elif defined( MACOS_X )
 	kill( getpid(), SIGINT );

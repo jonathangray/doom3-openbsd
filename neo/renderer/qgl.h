@@ -51,7 +51,7 @@ If you have questions concerning this license or the applicable additional terms
 #include <GL/gl.h>
 #include <GL/glx.h>
 
-#elif defined( __FreeBSD__ )
+#elif defined( __FreeBSD__ ) || defined(__OpenBSD__)
 
 // using our local glext.h
 // http://oss.sgi.com/projects/ogl-sample/ABI/
@@ -553,7 +553,7 @@ extern BOOL ( WINAPI * qwglSwapLayerBuffers)(HDC, UINT);
 
 #endif	// _WIN32
 
-#if defined( __linux__ ) || defined(__FreeBSD__)
+#if defined( __linux__ ) || defined(__FreeBSD__) || defined(__OpenBSD__)
 
 //GLX Functions
 extern XVisualInfo * (*qglXChooseVisual)( Display *dpy, int screen, int *attribList );

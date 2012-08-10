@@ -80,6 +80,8 @@ class idSDK( scons_utils.idSetupBase ):
 		self.M4Processing( sdk_dirname + '/setup.data/setup.xml.in', m4_dict )
 		# create the FreeBSD symlinks
 		self.SimpleCommand( 'cd ' + sdk_dirname + '/setup.data/bin ; ln -s Linux FreeBSD' )
+		# create the OpenBSD symlinks
+		self.SimpleCommand( 'cd ' + sdk_dirname + '/setup.data/bin ; ln -s Linux OpenBSD' )
 		# create amd64 symlinks
 		self.SimpleCommand( 'cd ' + sdk_dirname + '/setup.data/bin/Linux ; ln -s x86 amd64' )
 		# remove .svn entries

@@ -146,6 +146,8 @@ const char *Sys_EXEPath( void ) {
 		Sys_Printf("couldn't get the exe path via sysctl\n");
 		buf[ len ] = '\n';
 	}
+#elif defined(__OpenBSD__)
+	buf[ 0 ] = '\0';
 #else
 	idStr		linkpath;
 	int			len;
@@ -309,7 +311,7 @@ double Sys_ClockTicksPerSecond(void) {
 		return ret;
 	}
 
-#if defined( __FreeBSD__ )
+#if defined( __FreeBSD__ ) || defined(__OpenBSD__)
 	ret = MeasureClockTicks();
 	init = true;
 	common->Printf( "measured CPU frequency: %g MHz\n", ret / 1000000.0 ); 

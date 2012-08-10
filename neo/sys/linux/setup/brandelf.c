@@ -53,6 +53,9 @@
 #ifndef ELFOSABI_FREEBSD
 #define ELFOSABI_FREEBSD    9
 #endif
+#ifndef ELFOSABI_OPENBSD
+#define ELFOSABI_OPENBSD    12
+#endif
 
 
 static int elftype(const char *);
@@ -68,6 +71,7 @@ struct ELFtypes {
 static struct ELFtypes elftypes[] = {
 	{ "FreeBSD",	ELFOSABI_FREEBSD },
 	{ "Linux",	ELFOSABI_LINUX },
+	{ "OpenBSD",	ELFOSABI_OPENBSD },
 	{ "Solaris",	ELFOSABI_SOLARIS },
 	{ "SVR4",	ELFOSABI_SYSV }
 };
