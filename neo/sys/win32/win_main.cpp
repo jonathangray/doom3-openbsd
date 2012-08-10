@@ -1112,7 +1112,7 @@ void Sys_Init( void ) {
 			common->Printf( "WARNING: unknown sys_cpustring '%s'\n", win32.sys_cpustring.GetString() );
 			id = CPUID_GENERIC;
 		}
-		win32.cpuid = (cpuid_t) id;
+		win32.cpuid = (id_cpuid_t) id;
 	}
 
 	common->Printf( "%s\n", win32.sys_cpustring.GetString() );
@@ -1134,7 +1134,7 @@ void Sys_Shutdown( void ) {
 Sys_GetProcessorId
 ================
 */
-cpuid_t Sys_GetProcessorId( void ) {
+id_cpuid_t Sys_GetProcessorId( void ) {
     return win32.cpuid;
 }
 

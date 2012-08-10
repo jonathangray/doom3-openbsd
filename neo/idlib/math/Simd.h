@@ -97,7 +97,7 @@ class idSIMDProcessor {
 public:
 									idSIMDProcessor( void ) { cpuid = CPUID_NONE; }
 
-	cpuid_t							cpuid;
+	id_cpuid_t						cpuid;
 
 	virtual const char * VPCALL		GetName( void ) const = 0;
 

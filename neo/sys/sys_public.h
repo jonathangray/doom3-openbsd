@@ -218,7 +218,7 @@ typedef enum {
 	CPUID_CMOV							= 0x02000,	// Conditional Move (CMOV) and fast floating point comparison (FCOMI) instructions
 	CPUID_FTZ							= 0x04000,	// Flush-To-Zero mode (denormal results are flushed to zero)
 	CPUID_DAZ							= 0x08000	// Denormals-Are-Zero mode (denormal source operands are set to zero)
-} cpuid_t;
+} id_cpuid_t;
 
 typedef enum {
 	FPU_EXCEPTION_INVALID_OPERATION		= 1,
@@ -334,7 +334,7 @@ double			Sys_GetClockTicks( void );
 double			Sys_ClockTicksPerSecond( void );
 
 // returns a selection of the CPUID_* flags
-cpuid_t			Sys_GetProcessorId( void );
+id_cpuid_t	Sys_GetProcessorId( void );
 const char *	Sys_GetProcessorString( void );
 
 // returns true if the FPU stack is empty
@@ -604,7 +604,7 @@ public:
 
 	virtual double			GetClockTicks( void ) = 0;
 	virtual double			ClockTicksPerSecond( void ) = 0;
-	virtual cpuid_t			GetProcessorId( void ) = 0;
+	virtual id_cpuid_t		GetProcessorId( void ) = 0;
 	virtual const char *	GetProcessorString( void ) = 0;
 	virtual const char *	FPU_GetState( void ) = 0;
 	virtual bool			FPU_StackIsEmpty( void ) = 0;
