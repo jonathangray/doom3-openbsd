@@ -30,7 +30,7 @@ If you have questions concerning this license or the applicable additional terms
 #pragma hdrstop
 
 #ifndef USE_LIBC_MALLOC
-	#define USE_LIBC_MALLOC		0
+	#define USE_LIBC_MALLOC		1
 #endif
 
 #ifndef CRASH_ON_STATIC_ALLOCATION

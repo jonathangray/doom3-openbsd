@@ -385,12 +385,12 @@ Sys_DLL_Load
 TODO: OSX - use the native API instead? NSModule
 =================
 */
-int Sys_DLL_Load( const char *path ) {
+ssize_t Sys_DLL_Load( const char *path ) {
 	void *handle = dlopen( path, RTLD_NOW );
 	if ( !handle ) {
 		Sys_Printf( "dlopen '%s' failed: %s\n", path, dlerror() );
 	}
-	return (int)handle;
+	return (ssize_t)handle;
 }
 
 /*
@@ -398,7 +398,7 @@ int Sys_DLL_Load( const char *path ) {
 Sys_DLL_GetProcAddress
 =================
 */
-void* Sys_DLL_GetProcAddress( int handle, const char *sym ) {
+void* Sys_DLL_GetProcAddress( ssize_t handle, const char *sym ) {
 	const char *error;
 	void *ret = dlsym( (void *)handle, sym );
 	if ((error = dlerror()) != NULL)  {
@@ -412,7 +412,7 @@ void* Sys_DLL_GetProcAddress( int handle, const char *sym ) {
 Sys_DLL_Unload
 =================
 */
-void Sys_DLL_Unload( int handle ) {
+void Sys_DLL_Unload( ssize_t handle ) {
 	dlclose( (void *)handle );
 }
 

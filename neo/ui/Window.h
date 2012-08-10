@@ -157,7 +157,7 @@ public:
 
 struct idTransitionData {
 	idWinVar *data;
-	int	offset;
+	ssize_t	offset;
 	idInterpolateAccelDecelLinear<idVec4> interp;
 };
 
@@ -230,7 +230,7 @@ public:
 
 	virtual idWinVar *GetWinVarByName	(const char *_name, bool winLookup = false, drawWin_t** owner = NULL);
 
-	int  GetWinVarOffset( idWinVar *wv, drawWin_t *dw );
+	ssize_t  GetWinVarOffset( idWinVar *wv, drawWin_t *dw );
 	float GetMaxCharHeight();
 	float GetMaxCharWidth();
 	void SetFont();
