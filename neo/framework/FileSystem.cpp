@@ -2414,6 +2414,7 @@ if the full version is not found
 */
 void idFileSystemLocal::SetRestrictions( void ) {
 #ifdef ID_DEMO_BUILD
+return;
 	common->Printf( "\nRunning in restricted demo mode.\n\n" );
 	// make sure that the pak file has the header checksum we expect
 	searchpath_t	*search;

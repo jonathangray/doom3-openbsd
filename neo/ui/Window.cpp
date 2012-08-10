@@ -2763,7 +2763,7 @@ idWindow::EmitOp
 ================
 */
 
-int idWindow::EmitOp( int a, int b, wexpOpType_t opType, wexpOp_t **opp ) {
+int idWindow::EmitOp( ssize_t a, ssize_t b, wexpOpType_t opType, wexpOp_t **opp ) {
 	wexpOp_t *op;
 /*
 	// optimize away identity operations
@@ -2814,7 +2814,7 @@ int idWindow::EmitOp( int a, int b, wexpOpType_t opType, wexpOp_t **opp ) {
 idWindow::ParseEmitOp
 ================
 */
-int idWindow::ParseEmitOp( idParser *src, int a, wexpOpType_t opType, int priority, wexpOp_t **opp ) {
+int idWindow::ParseEmitOp( idParser *src, ssize_t a, wexpOpType_t opType, int priority, wexpOp_t **opp ) {
 	int b = ParseExpressionPriority( src, priority );
 	return EmitOp( a, b, opType, opp );  
 }
@@ -2829,7 +2829,7 @@ Returns a register index
 */
 int idWindow::ParseTerm( idParser *src,	idWinVar *var, int component ) {
 	idToken token;
-	int		a, b;
+	ssize_t		a, b;
 
 	src->ReadToken( &token );
 
@@ -2919,7 +2919,7 @@ Returns a register index
 #define	TOP_PRIORITY 4
 int idWindow::ParseExpressionPriority( idParser *src, int priority, idWinVar *var, int component ) {
 	idToken token;
-	int		a;
+	ssize_t		a;
 
 	if ( priority == 0 ) {
 		return ParseTerm( src, var, component );
@@ -3063,9 +3063,9 @@ void idWindow::EvaluateRegisters(float *registers) {
 			}
 			break;
 		case WOP_TYPE_MOD:
-			b = (int)registers[op->b];
+			b = (ssize_t)registers[op->b];
 			b = b != 0 ? b : 1;
-			registers[op->c] = (int)registers[op->a] % b;
+			registers[op->c] = (ssize_t)registers[op->a] % b;
 			break;
 		case WOP_TYPE_TABLE:
 			{

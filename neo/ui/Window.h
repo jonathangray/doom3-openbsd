@@ -106,7 +106,7 @@ typedef enum {
 
 typedef struct {
 	wexpOpType_t opType;	
-	int	a, b, c, d;
+	ssize_t	a, b, c, d;
 } wexpOp_t;
 
 struct idRegEntry {
@@ -350,8 +350,8 @@ protected:
 
 	int ExpressionTemporary();
 	wexpOp_t *ExpressionOp();
-	int EmitOp( int a, int b, wexpOpType_t opType, wexpOp_t **opp = NULL );
-	int ParseEmitOp( idParser *src, int a, wexpOpType_t opType, int priority, wexpOp_t **opp = NULL );
+	int EmitOp( ssize_t a, ssize_t b, wexpOpType_t opType, wexpOp_t **opp = NULL );
+	int ParseEmitOp( idParser *src, ssize_t a, wexpOpType_t opType, int priority, wexpOp_t **opp = NULL );
 	int ParseTerm( idParser *src, idWinVar *var = NULL, int component = 0 );
 	int ParseExpressionPriority( idParser *src, int priority, idWinVar *var = NULL, int component = 0 );
 	void EvaluateRegisters(float *registers);
