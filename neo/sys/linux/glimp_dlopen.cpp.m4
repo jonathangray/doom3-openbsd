@@ -84,7 +84,12 @@ GLimp_dlopen
 ======================
 */
 bool GLimp_dlopen() {
-	const char *driverName = r_glDriver.GetString()[0] ? r_glDriver.GetString() : "libGL.so.1";
+#ifdef __OpenBSD__
+	const char *libGL = "libGL.so";
+#else
+	const char *libGL = "libGL.so.1";
+#endif
+	const char *driverName = r_glDriver.GetString()[0] ? r_glDriver.GetString() : libGL;
 	common->Printf("dlopen(%s)\n", driverName);
 	if ( !( glHandle = dlopen( driverName, RTLD_NOW | RTLD_GLOBAL ) ) ) {
 		common->DPrintf("dlopen(%s) failed: %s\n", driverName, dlerror());
