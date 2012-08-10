@@ -150,6 +150,8 @@ else:
 	cpu = commands.getoutput('uname -p')
 	if ( cpu == 'powerpc' ):
 		cpu = 'ppc'
+	elif ( cpu == 'amd64' ):
+		cpu = 'amd64'
 	else:
 		cpu = 'cpu'
 g_os = commands.getoutput('uname')

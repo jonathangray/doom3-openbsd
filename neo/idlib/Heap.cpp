@@ -320,24 +320,24 @@ idHeap::Allocate16
 void *idHeap::Allocate16( const dword bytes ) {
 	byte *ptr, *alignedPtr;
 
-	ptr = (byte *) malloc( bytes + 16 + 4 );
+	ptr = (byte *) malloc( bytes + 16 + sizeof(ssize_t) );
 	if ( !ptr ) {
 		if ( defragBlock ) {
 			idLib::common->Printf( "Freeing defragBlock on alloc of %i.\n", bytes );
 			free( defragBlock );
 			defragBlock = NULL;
-			ptr = (byte *) malloc( bytes + 16 + 4 );			
+			ptr = (byte *) malloc( bytes + 16 + sizeof(ssize_t) );			
 			AllocDefragBlock();
 		}
 		if ( !ptr ) {
 			common->FatalError( "malloc failure for %i", bytes );
 		}
 	}
-	alignedPtr = (byte *) ( ( (int) ptr ) + 15 & ~15 );
-	if ( alignedPtr - ptr < 4 ) {
+	alignedPtr = (byte *) ( ( (ssize_t) ptr ) + 15 & ~15 );
+	if ( alignedPtr - ptr < sizeof(ssize_t) ) {
 		alignedPtr += 16;
 	}
-	*((int *)(alignedPtr - 4)) = (int) ptr;
+	*((ssize_t *)(alignedPtr - sizeof(ssize_t))) = (ssize_t) ptr;
 	return (void *) alignedPtr;
 }
 
@@ -347,7 +347,7 @@ idHeap::Free16
 ================
 */
 void idHeap::Free16( void *p ) {
-	free( (void *) *((int *) (( (byte *) p ) - 4)) );
+	free( (void *) *((ssize_t *) (( (byte *) p ) - sizeof(ssize_t))) );
 }
 
 /*
@@ -489,7 +489,7 @@ idHeap::page_s* idHeap::AllocatePage( dword bytes ) {
 			}
 		}
 
-		p->data		= (void *) ALIGN_SIZE( (int)((byte *)(p)) + sizeof( idHeap::page_s ) );
+		p->data		= (void *) ALIGN_SIZE( (ssize_t)((byte *)(p)) + sizeof( idHeap::page_s ) );
 		p->dataSize	= size - sizeof(idHeap::page_s);
 		p->firstFree = NULL;
 		p->largestFree = 0;
@@ -1070,7 +1070,7 @@ void *Mem_Alloc( const int size ) {
 	}
 	if ( !mem_heap ) {
 #ifdef CRASH_ON_STATIC_ALLOCATION
-		*((int*)0x0) = 1;
+		*((ssize_t*)0x0) = 1;
 #endif
 		return malloc( size );
 	}
@@ -1090,7 +1090,7 @@ void Mem_Free( void *ptr ) {
 	}
 	if ( !mem_heap ) {
 #ifdef CRASH_ON_STATIC_ALLOCATION
-		*((int*)0x0) = 1;
+		*((ssize_t*)0x0) = 1;
 #endif
 		free( ptr );
 		return;
@@ -1110,13 +1110,13 @@ void *Mem_Alloc16( const int size ) {
 	}
 	if ( !mem_heap ) {
 #ifdef CRASH_ON_STATIC_ALLOCATION
-		*((int*)0x0) = 1;
+		*((ssize_t*)0x0) = 1;
 #endif
 		return malloc( size );
 	}
 	void *mem = mem_heap->Allocate16( size );
 	// make sure the memory is 16 byte aligned
-	assert( ( ((int)mem) & 15) == 0 );
+	assert( ( ((ssize_t)mem) & 15) == 0 );
 	return mem;
 }
 
@@ -1131,13 +1131,13 @@ void Mem_Free16( void *ptr ) {
 	}
 	if ( !mem_heap ) {
 #ifdef CRASH_ON_STATIC_ALLOCATION
-		*((int*)0x0) = 1;
+		*((ssize_t*)0x0) = 1;
 #endif
 		free( ptr );
 		return;
 	}
 	// make sure the memory is 16 byte aligned
-	assert( ( ((int)ptr) & 15) == 0 );
+	assert( ( ((ssize_t)ptr) & 15) == 0 );
  	mem_heap->Free16( ptr );
 }
 
@@ -1570,7 +1570,7 @@ void *Mem_AllocDebugMemory( const int size, const char *fileName, const int line
 
 	if ( !mem_heap ) {
 #ifdef CRASH_ON_STATIC_ALLOCATION
-		*((int*)0x0) = 1;
+		*((ssize_t*)0x0) = 1;
 #endif
 		// NOTE: set a breakpoint here to find memory allocations before mem_heap is initialized
 		return malloc( size );
@@ -1615,7 +1615,7 @@ void Mem_FreeDebugMemory( void *p, const char *fileName, const int lineNumber, c
 
 	if ( !mem_heap ) {
 #ifdef CRASH_ON_STATIC_ALLOCATION
-		*((int*)0x0) = 1;
+		*((ssize_t*)0x0) = 1;
 #endif
 		// NOTE: set a breakpoint here to find memory being freed before mem_heap is initialized
 		free( p );
@@ -1689,7 +1689,7 @@ void *Mem_Alloc16( const int size, const char *fileName, const int lineNumber ) 
 	}
 	void *mem = Mem_AllocDebugMemory( size, fileName, lineNumber, true );
 	// make sure the memory is 16 byte aligned
-	assert( ( ((int)mem) & 15) == 0 );
+	assert( ( ((ssize_t)mem) & 15) == 0 );
 	return mem;
 }
 
@@ -1703,7 +1703,7 @@ void Mem_Free16( void *ptr, const char *fileName, const int lineNumber ) {
 		return;
 	}
 	// make sure the memory is 16 byte aligned
-	assert( ( ((int)ptr) & 15) == 0 );
+	assert( ( ((ssize_t)ptr) & 15) == 0 );
 	Mem_FreeDebugMemory( ptr, fileName, lineNumber, true );
 }
 
