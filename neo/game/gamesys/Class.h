@@ -57,7 +57,7 @@ struct idEventFunc {
 class idEventArg {
 public:
 	int			type;
-	int			value;
+	ssize_t			value;
 
 	idEventArg()								{ type = D_EVENT_INTEGER; value = 0; };
 	idEventArg( int data )						{ type = D_EVENT_INTEGER; value = data; };
@@ -230,7 +230,7 @@ public:
 	bool						ProcessEvent( const idEventDef *ev, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7 );
 	bool						ProcessEvent( const idEventDef *ev, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7, idEventArg arg8 );
 
-	bool						ProcessEventArgPtr( const idEventDef *ev, int *data );
+	bool						ProcessEventArgPtr( const idEventDef *ev, ssize_t *data );
 	void						CancelEvents( const idEventDef *ev );
 
 	void						Event_Remove( void );
