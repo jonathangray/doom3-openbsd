@@ -1508,6 +1508,7 @@ int idStr::vsnPrintf( char *dest, int size, const char *fmt, va_list argptr ) {
 #define _vsnprintf	use_idStr_vsnPrintf
 #else
 #undef vsnprintf
+	dest[size-1] = '\0';
 	ret = vsnprintf( dest, size, fmt, argptr );
 #define vsnprintf	use_idStr_vsnPrintf
 #endif
