@@ -242,6 +242,11 @@ if (g_os == 'OpenBSD'):
 	SILENT = '0'
 	M4 = 'gm4'
 
+if (g_os == 'OpenBSD' and cpu == 'x86'):
+	# base GCC triggers GCC PR 34215 on i386, use ports gcc
+	CC = 'egcc'
+	CXX = 'eg++'
+
 # end default settings ---------------------------
 
 # site settings ----------------------------------
