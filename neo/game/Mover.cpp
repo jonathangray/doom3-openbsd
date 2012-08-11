@@ -762,7 +762,12 @@ void idMover::BeginMove( idThread *thread ) {
 	if ( at + dt > move_time ) {
 		// there's no real correct way to handle this, so we just scale
 		// the times to fit into the move time in the same proportions
-		at = idPhysics::SnapTimeToPhysicsFrame( at * move_time / ( at + dt ) );
+		
+		// avoid zero division
+		if ( at + dt == 0 )
+			at = idPhysics::SnapTimeToPhysicsFrame( 0 );
+		else
+			at = idPhysics::SnapTimeToPhysicsFrame( at * move_time / ( at + dt ) );
 		dt = move_time - at;
 	}
 
